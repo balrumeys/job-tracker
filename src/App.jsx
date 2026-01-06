@@ -1,7 +1,9 @@
+import Header from "./components/Header";
+
 function App() {
   return (
     <div>
-      <h1>Job Tracker</h1>
+      <Header />
       <p>My first real React project</p>
     </div>
   );
