@@ -1,12 +1,18 @@
 import Header from "./components/Header";
 import Dashboard from "./pages/Dashboard";
+import Login from "./pages/Login";
+
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 function App() {
   return (
-    <div>
+    <BrowserRouter>
       <Header />
-      <Dashboard />
-      <p>My first real React project</p>
-    </div>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
