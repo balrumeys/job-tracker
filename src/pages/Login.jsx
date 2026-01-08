@@ -1,14 +1,17 @@
 import { useState } from "react";
 
-function Login() {
+function Login(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   function handleSubmit(e) {
     e.preventDefault();
 
-    console.log("Email:", email);
-    console.log("Password:", password);
+    if (email === "test@test.com" && password === "123456") {
+      props.setIsAuthenticated(true);
+    } else {
+      alert("Hatalı giriş");
+    }
   }
   return (
     <div>
