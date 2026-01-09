@@ -1,14 +1,18 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Login(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   function handleSubmit(e) {
     e.preventDefault();
 
     if (email === "test@test.com" && password === "123456") {
+      localStorage.setItem("isAuthenticated", "true");
       props.setIsAuthenticated(true);
+      navigate("/dashboard");
     } else {
       alert("Hatalı giriş");
     }

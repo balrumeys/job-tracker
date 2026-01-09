@@ -1,7 +1,8 @@
-function Header() {
+function Header({ isAuthenticated, onLogout }) {
   return (
-    <header>
+    <header style={{ padding: "10px", borderBottom: "1px solid pink" }}>
       <h2>Job Tracker</h2>
+      {isAuthenticated && <button onClick={onLogout}>Logout</button>}
     </header>
   );
 }
