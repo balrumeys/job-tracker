@@ -1,9 +1,15 @@
 import { useEffect, useState } from "react";
-import { fetchJobs, deleteJob } from "../api/jobs";
+import { fetchJobs, deleteJob, addJob } from "../api/jobs";
+import AddJobForm from "../components/AddJobForm";
 
 function Dashboard() {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  async function handleAddJob(jobData) {
+    const newJob = await addJob(jobData);
+    setJobs((prev) => [...prev, newJob]);
+  }
 
   useEffect(() => {
     async function loadJobs() {
@@ -21,6 +27,8 @@ function Dashboard() {
 
   return (
     <div>
+      <AddJobForm onAddJob={handleAddJob} />
+
       <h2>Job List</h2>
 
       {jobs.length === 0 && <p>No jobs yet</p>}
