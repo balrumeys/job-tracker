@@ -13,14 +13,20 @@ export function fetchJobs() {
 }
 //POST
 export function addJob(job) {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     setTimeout(() => {
+      if (job.title.toLowerCase().includes("fail")) {
+        reject(new Error("Server error: could not add job"));
+        return;
+      }
+
       const newJob = { ...job, id: Date.now() };
       jobs.push(newJob);
       resolve(newJob);
     }, 500);
   });
 }
+
 //DELETE
 export function deleteJob(id) {
   return new Promise((resolve) => {

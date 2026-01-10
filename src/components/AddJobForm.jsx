@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-function AddJobForm({ onAddJob }) {
+function AddJobForm({ onAddJob, adding, error }) {
   const [title, setTitle] = useState("");
   const [company, setCompany] = useState("");
 
@@ -42,7 +42,11 @@ function AddJobForm({ onAddJob }) {
           />
         </div>
 
-        <button type="submit">Add</button>
+        {error && <p style={{ color: "red" }}>{error}</p>}
+
+        <button type="submit" disabled={adding}>
+          {adding ? "Adding..." : "Add"}
+        </button>
       </form>
     </div>
   );

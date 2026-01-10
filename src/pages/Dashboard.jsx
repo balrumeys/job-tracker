@@ -5,10 +5,21 @@ import AddJobForm from "../components/AddJobForm";
 function Dashboard() {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [adding, setAdding] = useState(false);
+  const [addError, setAddError] = useState("");
 
   async function handleAddJob(jobData) {
-    const newJob = await addJob(jobData);
-    setJobs((prev) => [...prev, newJob]);
+    setAddError("");
+    setAdding(true);
+
+    try {
+      const newJob = await addJob(jobData);
+      setJobs((prev) => [...prev, newJob]);
+    } catch (err) {
+      setAddError("Job could not be added");
+    } finally {
+      setAdding(false);
+    }
   }
 
   useEffect(() => {
@@ -27,7 +38,7 @@ function Dashboard() {
 
   return (
     <div>
-      <AddJobForm onAddJob={handleAddJob} />
+      <AddJobForm onAddJob={handleAddJob} adding={adding} error={addError} />
 
       <h2>Job List</h2>
 
