@@ -1,25 +1,34 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { fakeLoginApi } from "../api/auth";
 
-function Login(props) {
+function Login({ setIsAuthenticated }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
 
-    if (email === "test@test.com" && password === "123456") {
+    setError("");
+    setLoading(true);
+
+    try {
+      await fakeLoginApi(email, password);
+
       localStorage.setItem("isAuthenticated", "true");
-      props.setIsAuthenticated(true);
-      navigate("/dashboard");
-    } else {
-      alert("Hatalı giriş");
+      setIsAuthenticated(true);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
     }
   }
   return (
     <div>
       <h2>Login</h2>
+      {error && <p style={{ color: "red" }}>{error}</p>}
+
       <form onSubmit={handleSubmit}>
         <div>
           <input
@@ -38,7 +47,9 @@ function Login(props) {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <button type="submit">Login</button>
+        <button type="submit" disabled={loading}>
+          {loading ? "Logging in..." : "Login"}
+        </button>
       </form>
     </div>
   );
