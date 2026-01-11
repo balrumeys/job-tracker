@@ -7,6 +7,8 @@ function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [adding, setAdding] = useState(false);
   const [addError, setAddError] = useState("");
+  const [deletingId, setDeletingId] = useState(null);
+  const [deleteError, setDeleteError] = useState("");
 
   async function handleAddJob(jobData) {
     setAddError("");
@@ -42,13 +44,20 @@ function Dashboard() {
 
       <h2>Job List</h2>
 
+      {deleteError && <p style={{ color: "red" }}>{deleteError}</p>}
+
       {jobs.length === 0 && <p>No jobs yet</p>}
 
       <ul>
         {jobs.map((job) => (
           <li key={job.id}>
             {job.title} - {job.company}
-            <button onClick={() => handleDelete(job.id)}>Delete</button>
+            <button
+              onClick={() => handleDelete(job.id)}
+              disabled={deletingId === job.id}
+            >
+              {deletingId === job.id ? "Deleting..." : "Delete"}
+            </button>
           </li>
         ))}
       </ul>
@@ -56,8 +65,16 @@ function Dashboard() {
   );
 
   async function handleDelete(id) {
-    await deleteJob(id);
-    setJobs((prev) => prev.filter((job) => job.id !== id));
+    setDeleteError("");
+    setDeletingId(id);
+    try {
+      await deleteJob(id);
+      setJobs((prev) => prev.filter((job) => job.id !== id));
+    } catch (err) {
+      setDeleteError("Job could not be deleted");
+    } finally {
+      setDeletingId(null);
+    }
   }
 }
 
